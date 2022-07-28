@@ -6,22 +6,27 @@ require './player'
 require './dealer'
 
 class Logic
+  BID = 10
   
   def initialize
     @player = Player.new
     @dealer = Dealer.new(cards_factory)
-    puts "logic is done!"
-    puts "player: ", @player.hand
-    puts "dealer: ", @dealer.hand
-    puts "deck: "
-    print @dealer.deck.first.back_view, @dealer.deck.first.front_view
+  end
+
+  def start
+    #списываем ставку, перемешиваем колоду, раздаём карты
+    return nil if @dealer.make_bid.nil? || @player.make_bid.nil?
+    @dealer.shuffle_cards
+    @dealer.bank += 20
+    @player.hand = [@dealer.deck.pop, @dealer.deck.pop]
+    @dealer.hand = [@dealer.deck.pop, @dealer.deck.pop]
   end
 
   private
 
   def cards_factory
     temp_deck = []
-    (2..10).each { |n| temp_deck << n.to_s }
+    (2..10).each { |n| temp_deck << n }
     ['J', 'Q', 'K', 'A'].each { |n| temp_deck << n }
     suits = ["\u2660", "\u2666", "\u2665", "\u2663"]
 

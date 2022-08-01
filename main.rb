@@ -5,6 +5,7 @@ require './logic'
 class Main
 
   def initialize
+    system 'clear'
     puts 'Welcome to Black Jack from Thinknetica!'
     @logic = Logic.new
     puts "Type smth to start the game! (type 'quit' at any step to exit)"
@@ -15,19 +16,55 @@ class Main
   def start
     loop do
       break if gets.chomp == "quit"
-      check_restart if @logic.start.nil?
+      @logic.start
+      next_move
+    end
+  end
+  
+  def next_move
+    restart if @logic.is_over?
+    puts "1 - Take one more card, 2 - Skip move, 3 - Open cards"
+    move = gets.chomp.to_i
+
+    case move
+    when 1
+      take_more
+    when 2
+      skip_move
+    when 3
+      open_cards
+    else
+      exit
     end
   end
 
-  def check_restart
-    puts "One of the player don't have enough money for bid."
-    puts "Type 'restart' to restart the game or smth to exit"
-    restart if gets.chomp == "restart"
-    exit
+  def take_more
+    @logic.take_card
+    next_move
+  end
+
+  def skip_move
+    @logic.skip_move
+    next_move
+  end
+
+  def open_cards
+    @logic.open_cards
   end
 
   def restart
-    puts "RESTARTING THE GAME!"
+    puts "Do you wanna play again?"
+    puts "1 - Yes, 2 - No"
+
+    move = gets.chomp.to_i
+
+    case move
+    when 1
+      puts "START?!"
+      start
+    else
+      exit
+    end
   end
 
 end

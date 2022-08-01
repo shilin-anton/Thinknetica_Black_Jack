@@ -1,13 +1,15 @@
 
 #Parent class for player and dealer
+require './modules/points_counter.rb'
+require './modules/hand_drawer.rb'
 
 class BasePlayer
-  attr_accessor :hand, :score
+  include PointsCounter, HandDrawer
+  attr_accessor :hand
   attr_reader :money
 
   def initialize
     @hand = []
-    @score = 0
     @money = 100
   end
 
@@ -15,7 +17,7 @@ class BasePlayer
     if @money >= 10
       @money -= 10
     else
-      return nil
+      return false
     end
   end
 

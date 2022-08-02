@@ -1,8 +1,10 @@
 
 #Main class for interface operating
 require './logic'
+require './modules/exceptions.rb'
 
 class Main
+  include MyExceptions
 
   def initialize
     system 'clear'
@@ -19,10 +21,19 @@ class Main
       @logic.start
       next_move
     end
+  rescue NotEnoughMoney
+    new_game
+  end
+
+  def restart
+    puts "New round started!"
+    @logic.restart
+    next_move
   end
   
   def next_move
-    restart if @logic.is_over?
+    round_ended if @logic.is_over?
+
     puts "1 - Take one more card, 2 - Skip move, 3 - Open cards"
     move = gets.chomp.to_i
 
@@ -50,18 +61,28 @@ class Main
 
   def open_cards
     @logic.open_cards
+    next_move
   end
 
-  def restart
-    puts "Do you wanna play again?"
-    puts "1 - Yes, 2 - No"
-
+  def round_ended
+    puts "Round ended. 1 - to play one more game"
     move = gets.chomp.to_i
 
     case move
     when 1
-      puts "START?!"
-      start
+      restart
+    else
+      exit
+    end
+  end
+
+  def new_game
+    puts "Do you wanna start new game?\n1 - Yes"
+    move = gets.chomp.to_i
+
+    case move
+    when 1
+      initialize
     else
       exit
     end

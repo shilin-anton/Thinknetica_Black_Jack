@@ -9,12 +9,10 @@ module PointsCounter
 
   def count_points(cards)
     @points = 0
-    has_ace = false
 
     cards.each do |card|
       if card.name == 'A'
-        has_ace = true
-        next
+        count_ace
       end
       if TEN_POINTS.include?(card.name)
         @points += 10
@@ -22,8 +20,6 @@ module PointsCounter
         @points += card.name.to_i
       end
     end
-
-    count_ace if has_ace
 
     @points
   end

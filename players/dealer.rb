@@ -15,17 +15,8 @@ class Dealer < BasePlayer
     @deck.shuffle!
   end
 
-  def collect_cards(cards)
-    @deck + cards
-  end
-
   def make_move
-    took_card = false
-    if count_points(@hand) < 17
-      @hand << @deck.pop
-      took_card = true
-    end
-    return took_card
+    @hand << @deck.pop if count_points(@hand) < 17
   end
 
 end

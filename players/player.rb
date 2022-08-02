@@ -6,5 +6,6 @@ class Player < BasePlayer
 
   def initialize
     super
+    @money = 10
   end
 end

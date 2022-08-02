@@ -1,7 +1,8 @@
+# frozen_string_literal: true
 
-#Dealer class; holding deck and bank
 require './players/base_player'
 
+# Dealer class; holding deck and bank
 class Dealer < BasePlayer
   attr_accessor :deck, :bank
 
@@ -10,7 +11,7 @@ class Dealer < BasePlayer
     @bank = 0
     @deck = deck
   end
-  
+
   def shuffle_cards
     @deck.shuffle!
   end
@@ -18,5 +19,4 @@ class Dealer < BasePlayer
   def make_move
     @hand << @deck.pop if count_points(@hand) < 17
   end
-
 end

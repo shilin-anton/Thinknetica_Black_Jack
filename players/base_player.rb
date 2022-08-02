@@ -1,10 +1,12 @@
+# frozen_string_literal: true
 
-#Parent class for player and dealer
-require './modules/points_counter.rb'
-require './modules/hand_drawer.rb'
+require './modules/points_counter'
+require './modules/hand_drawer'
 
+# Parent class for player and dealer
 class BasePlayer
-  include PointsCounter, HandDrawer
+  include HandDrawer
+  include PointsCounter
   attr_accessor :hand, :money
 
   def initialize
@@ -16,8 +18,7 @@ class BasePlayer
     if @money >= bid
       @money -= bid
     else
-      return false
+      false
     end
   end
-
 end

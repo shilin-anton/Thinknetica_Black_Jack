@@ -1,17 +1,18 @@
+# frozen_string_literal: true
 
-#Class for gaming process operating
+require './cards/card'
+require './players/player'
+require './players/dealer'
+require './modules/exceptions'
 
-require './cards/card.rb'
-require './players/player.rb'
-require './players/dealer.rb'
-require './modules/exceptions.rb'
-
+# Class for gaming process operating
 class Logic
   include MyExceptions
 
   attr_accessor :end_game
+
   BID = 10
-  
+
   def initialize
     @player = Player.new
     @dealer = Dealer.new(cards_factory)
@@ -19,12 +20,13 @@ class Logic
   end
 
   def start
-    #списываем ставку, перемешиваем колоду, раздаём карты
-    raise NotEnoughMoney.new("Dealer") unless @dealer.make_bid(BID)
-    raise NotEnoughMoney.new("Player") unless @player.make_bid(BID)
-    puts "AFTER RAISE!"
+    # списываем ставку, перемешиваем колоду, раздаём карты
+    raise NotEnoughMoney, 'Dealer' unless @dealer.make_bid(BID)
+    raise NotEnoughMoney, 'Player' unless @player.make_bid(BID)
+
+    puts 'AFTER RAISE!'
     @dealer.shuffle_cards
-    @dealer.bank += BID*2
+    @dealer.bank += BID * 2
     @player.hand = [@dealer.deck.pop, @dealer.deck.pop]
     @dealer.hand = [@dealer.deck.pop, @dealer.deck.pop]
 
@@ -42,33 +44,32 @@ class Logic
 
   def take_card
     if @player.hand.size > 2
-      print_info("You can have maximum 3 cards on hand!")
+      print_info('You can have maximum 3 cards on hand!')
     else
       @player.hand << @dealer.deck.pop
       dealer_move
-      open_cards if is_over?
+      open_cards if over?
     end
   end
 
   def skip_move
     dealer_move
-    open_cards if is_over?
+    open_cards if over?
   end
 
   def open_cards
     @end_game = true
     winner, score = define_winner
-    if winner.nil?
-      msg = "*** Round draw ***\n"
-    else
-      msg = "The winner is *** #{winner} *** with score: #{score}.\n"
-    end
-    msg +=  "Dealer's balance: #{@dealer.money}; Player's balance: #{@player.money}"
+    msg = if winner.nil?
+            "*** Round draw ***\n"
+          else
+            "The winner is *** #{winner} *** with score: #{score}.\n"
+          end
+    msg += "Dealer's balance: #{@dealer.money}; Player's balance: #{@player.money}"
     print_info(msg, true)
   end
 
-
-  def is_over?
+  def over?
     (@player.hand.size == 3 && @dealer.hand.size == 3) || @end_game
   end
 
@@ -76,20 +77,21 @@ class Logic
 
   def dealer_move
     if @dealer.make_move
-      print_info("*** Dealer took a card ***")
+      print_info('*** Dealer took a card ***')
     else
-      print_info("*** Dealer skipped his move ***")
+      print_info('*** Dealer skipped his move ***')
     end
   end
 
   def define_winner
     dealer_score = @dealer.count_points(@dealer.hand)
     player_score = @player.count_points(@player.hand)
-    winner, score = nil, nil
+    winner = nil
+    score = nil
 
     if (dealer_score == player_score) || (dealer_score > 21 && player_score > 21)
-      @dealer.money += @dealer.bank/2
-      @player.money += @dealer.bank/2
+      @dealer.money += @dealer.bank / 2
+      @player.money += @dealer.bank / 2
       score = player_score
     else
       if (dealer_score <= 21 && dealer_score > player_score) ||
@@ -104,10 +106,10 @@ class Logic
       end
       @dealer.bank = 0
     end
-    return winner, score
+    [winner, score]
   end
 
-  def print_info(msg = '', end_round = false)
+  def print_info(msg = '', end_round: false)
     system 'clear'
     if end_round
       @dealer.front_view(@dealer.hand)
@@ -124,16 +126,15 @@ class Logic
   def cards_factory
     temp_deck = []
     (2..10).each { |n| temp_deck << n }
-    ['J', 'Q', 'K', 'A'].each { |n| temp_deck << n }
+    %w[J Q K A].each { |n| temp_deck << n }
     suits = ["\u2660", "\u2666", "\u2665", "\u2663"]
 
     complete_deck = []
 
     temp_deck.each do |card|
-      suits.each { |suit|  complete_deck << Card.new(card, suit) }
+      suits.each { |suit| complete_deck << Card.new(card, suit) }
     end
 
     complete_deck
   end
 end
-

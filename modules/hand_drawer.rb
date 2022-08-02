@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
+require './cards/card'
+
 # Module for drawing cards on hand
-
-require './cards/card.rb'
-
 module HandDrawer
   TOP_LEFT = "\u250C"
   TOP_RIGHT = "\u2510"
@@ -9,7 +10,7 @@ module HandDrawer
   BOTTOM_RIGHT = "\u2518"
 
   def front_view(hand_deck)
-    hand_deck.each_with_index do |card, i|
+    hand_deck.each_with_index do |_card, i|
       print "#{TOP_LEFT}-----#{TOP_RIGHT} "
       print "\n" if i == hand_deck.size - 1
     end
@@ -33,38 +34,36 @@ module HandDrawer
       print "\n" if i == hand_deck.size - 1
     end
 
-    hand_deck.each_with_index do |card, i|
+    hand_deck.each_with_index do |_card, i|
       print "#{BOTTOM_LEFT}-----#{BOTTOM_RIGHT} "
       print "\n" if i == hand_deck.size - 1
     end
   end
 
   def back_view(cards_count)
-
     cards_count.times do |i|
       print "#{TOP_LEFT}-----#{TOP_RIGHT} "
-      print "\n" if i+1 == cards_count
+      print "\n" if i + 1 == cards_count
     end
 
     cards_count.times do |i|
-      print "|* * *| "
-      print "\n" if i+1 == cards_count
+      print '|* * *| '
+      print "\n" if i + 1 == cards_count
     end
 
     cards_count.times do |i|
-      print "|* * *| "
-      print "\n" if i+1 == cards_count
+      print '|* * *| '
+      print "\n" if i + 1 == cards_count
     end
 
     cards_count.times do |i|
-      print "|* * *| "
-      print "\n" if i+1 == cards_count
+      print '|* * *| '
+      print "\n" if i + 1 == cards_count
     end
 
     cards_count.times do |i|
       print "#{BOTTOM_LEFT}-----#{BOTTOM_RIGHT} "
-      print "\n" if i+1 == cards_count
+      print "\n" if i + 1 == cards_count
     end
   end
-
 end

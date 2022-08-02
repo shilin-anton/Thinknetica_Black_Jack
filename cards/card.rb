@@ -1,6 +1,6 @@
+# frozen_string_literal: true
 
-#Class for gaming card representative
-
+# Class for gaming card representative
 class Card
   attr_reader :name, :suit
 

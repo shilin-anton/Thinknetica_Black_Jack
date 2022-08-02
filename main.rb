@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 
-#Main class for interface operating
 require './logic'
-require './modules/exceptions.rb'
+require './modules/exceptions'
 
+# Main class for interface operating
 class Main
   include MyExceptions
 
@@ -11,13 +12,14 @@ class Main
     puts 'Welcome to Black Jack from Thinknetica!'
     @logic = Logic.new
     puts "Type smth to start the game! (type 'quit' at any step to exit)"
-    
+
     start
   end
 
   def start
     loop do
-      break if gets.chomp == "quit"
+      break if gets.chomp == 'quit'
+
       @logic.start
       next_move
     end
@@ -26,15 +28,15 @@ class Main
   end
 
   def restart
-    puts "New round started!"
+    puts 'New round started!'
     @logic.restart
     next_move
   end
-  
+
   def next_move
     round_ended if @logic.is_over?
 
-    puts "1 - Take one more card, 2 - Skip move, 3 - Open cards"
+    puts '1 - Take one more card, 2 - Skip move, 3 - Open cards'
     move = gets.chomp.to_i
 
     case move
@@ -65,7 +67,7 @@ class Main
   end
 
   def round_ended
-    puts "Round ended. 1 - to play one more game"
+    puts 'Round ended. 1 - to play one more game'
     move = gets.chomp.to_i
 
     case move
@@ -87,7 +89,6 @@ class Main
       exit
     end
   end
-
 end
 
 main = Main.new

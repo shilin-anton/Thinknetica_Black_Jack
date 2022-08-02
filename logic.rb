@@ -109,7 +109,7 @@ class Logic
     [winner, score]
   end
 
-  def print_info(msg = '', end_round: false)
+  def print_info(msg = '', end_round = false)
     system 'clear'
     if end_round
       @dealer.front_view(@dealer.hand)

@@ -67,7 +67,7 @@ class Main
   end
 
   def round_ended
-    puts 'Round ended. 1 - to play one more game'
+    puts "Round ended. 1 - to play one more game"
     move = gets.chomp.to_i
 
     case move
@@ -79,7 +79,7 @@ class Main
   end
 
   def new_game
-    puts "Do you wanna start new game?\n1 - Yes"
+    puts "Do you wanna start new game?\n1 - Yes\n(All progress will be lost)"
     move = gets.chomp.to_i
 
     case move

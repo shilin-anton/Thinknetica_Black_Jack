@@ -34,7 +34,7 @@ class Main
   end
 
   def next_move
-    round_ended if @logic.is_over?
+    round_ended if @logic.over?
 
     puts '1 - Take one more card, 2 - Skip move, 3 - Open cards'
     move = gets.chomp.to_i
